@@ -1,4 +1,4 @@
-var doc = document; 
+var doc = document;
 var errorDivButtons = '<div class="confirmation-buttons" style="margin-top: 1em; text-align: center;"> <button class="btn evt-confirm-btn btn-confirm-no" onclick="Dialog.close(\'Errore\')">Capito</button> </div>';
 
 if ( window.frames.length>0 && window.main != null ) doc = window.main.document;
@@ -20,9 +20,9 @@ function time2sec( timeToSec )
   return sec;
 }
 
-var imputSpear       = doc.forms[0].spear_0;
-var imputSword       = doc.forms[0].sword_0;
-var imputAxe         = doc.forms[0].axe_0;
+var inputSpear       = doc.forms[0].spear_0;
+var inputSword       = doc.forms[0].sword_0;
+var inputAxe         = doc.forms[0].axe_0;
 
 var availableWood    = doc.getElementById('wood').innerHTML;
 var availableStone   = doc.getElementById('stone').innerHTML;
@@ -30,7 +30,7 @@ var availableIron    = doc.getElementById('iron').innerHTML;
 
 var availablePop     = parseInt( doc.getElementById('pop_max_label').innerText ) - parseInt( doc.getElementById('pop_current_label').innerText );
 
-if ( imputSpear )
+if ( inputSpear )
 {
   var spearTimeCost  = time2sec( doc.getElementById('spear_0_cost_time').innerText );
   var spearMax       = parseInt( doc.getElementById('spear_0_a').innerText.replace('(','').replace(')','') );
@@ -40,7 +40,7 @@ if ( imputSpear )
   var spearIronCost  = parseInt( doc.getElementById('spear_0_cost_iron').innerText );
 }
 
-if ( imputSword )
+if ( inputSword )
 {
   var swordTimeCost  = time2sec( doc.getElementById('sword_0_cost_time').innerText );
   var swordMax       = parseInt( doc.getElementById('sword_0_a').innerText.replace('(','').replace(')',''));
@@ -50,7 +50,7 @@ if ( imputSword )
   var swordIronCost  = parseInt( doc.getElementById('sword_0_cost_iron').innerText );
 }
 
-if ( imputAxe )
+if ( inputAxe )
 {
   var axeTimeCost  = time2sec( doc.getElementById('axe_0_cost_time').innerText );
   var axeMax       = parseInt( doc.getElementById('axe_0_a').innerText.replace('(','').replace(')',''));
@@ -70,17 +70,17 @@ var maxArmyIron    = Math.floor( availableIron/totalIronCost );
 
 var maxArmy        = Math.min( maxArmyWood, maxArmyStone, maxArmyIron );
 
-if 
-( 
-     ( typeof imputSword != "undefined" && doc.forms[0].spear_0.value !== "" )
-  || ( typeof imputSword != "undefined" && doc.forms[0].sword_0.value !== "" )
-  || ( typeof imputAxe   != "undefined" && doc.forms[0].axe_0.value   !== "" )
-) 
-{ 
-  Dialog.show( 'Errore', 'Ripulisci tutti i campi di reclutamento!' + errorDivButtons ); 
-  throw new Error("ERROR"); 
+if
+(
+     ( typeof inputSword != "undefined" && doc.forms[0].spear_0.value !== "" )
+  || ( typeof inputSword != "undefined" && doc.forms[0].sword_0.value !== "" )
+  || ( typeof inputAxe   != "undefined" && doc.forms[0].axe_0.value   !== "" )
+)
+{
+  Dialog.show( 'Errore', 'Ripulisci tutti i campi di reclutamento!' + errorDivButtons );
+  throw new Error("ERROR");
 }
-  
+
 function train()
 {
   var time      = doc.getElementById('time').value;
@@ -88,8 +88,8 @@ function train()
 
   if ( timeArray.length !== 3 || timeArray.some( (x) => x === "" ) )
   {
-    Dialog.show( 'Errore', '<p>Formattazione errata!</p>' + errorDivButtons ); 
-    throw new Error("ERROR"); 
+    Dialog.show( 'Errore', '<p>Formattazione errata!</p>' + errorDivButtons );
+    throw new Error("ERROR");
   }
 
   var isSpear = doc.getElementById( 'spear' ).checked;
@@ -109,9 +109,9 @@ function train()
   }
 
   var totalMax = 0;
-  totalMax += typeof imputSpear != "undefined" && isSpear === true ? spearTimeCost : 0;
-  totalMax += typeof imputSword != "undefined" && isSword === true ? swordTimeCost : 0;
-  totalMax += typeof imputAxe   != "undefined" && isAxe   === true ? axeTimeCost   : 0;
+  totalMax += typeof inputSpear != "undefined" && isSpear === true ? spearTimeCost : 0;
+  totalMax += typeof inputSword != "undefined" && isSword === true ? swordTimeCost : 0;
+  totalMax += typeof inputAxe   != "undefined" && isAxe   === true ? axeTimeCost   : 0;
 
   var sec   = time2sec( time );
   var train = Math.floor( sec/totalMax );
@@ -119,20 +119,27 @@ function train()
 
   if ( train > availablePop ) train = Math.floor( availablePop / selectedTroupe );
 
-  var spear = typeof imputSpear != "undefined" && isSpear === true ? train > spearMax ? spearMax : train : "";
-  var sword = typeof imputSword != "undefined" && isSword === true ? train > swordMax ? swordMax : train : "";
-  var axe   = typeof imputAxe   != "undefined" && isAxe   === true ? train > axeMax   ? axeMax   : train : "";
+  var spear = typeof inputSpear != "undefined" && isSpear === true ? train > spearMax ? spearMax : train : "";
+  var sword = typeof inputSword != "undefined" && isSword === true ? train > swordMax ? swordMax : train : "";
+  var axe   = typeof inputAxe   != "undefined" && isAxe   === true ? train > axeMax   ? axeMax   : train : "";
 
-  if ( typeof imputSpear != "undefined" ) imputSpear.value = spear;
-  if ( typeof imputSword != "undefined" ) imputSword.value = sword;
-  if ( typeof imputAxe   != "undefined" ) imputAxe.value   = axe;
-  Dialog.close( 'content' ) 
+  if ( typeof inputSpear != "undefined" ) inputSpear.value = spear;
+  if ( typeof inputSword != "undefined" ) inputSword.value = sword;
+  if ( typeof inputAxe   != "undefined" ) inputAxe.value   = axe;
+  Dialog.close( 'content' )
 }
-  
+
 (function()
 {
   console.log('Script made by IceWizard');
   console.log('Version 1.0.1');
   console.log('Last update: 2020-05-01');
+
+  console.log('availableWood:' + availableWood);
+  console.log('availableStone:' + availableStone);
+  console.log('availableWood:' + availableWood);
+  console.log('availableIron:' + availableIron);
+  console.log('availablePop:' + availablePop);
+
   Dialog.show('content', "<table> <tr> <td> <span>Tempo: </span> <input type='text' id='time' value='hh:mm:ss'/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='spear' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='sword' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='axe' checked/> </td><td> <button class='btn evt-confirm-btn btn-confirm-ok' onclick='train()'>Recluta</button> </td></tr></table>");
 }());
