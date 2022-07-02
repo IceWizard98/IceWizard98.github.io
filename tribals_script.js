@@ -28,6 +28,8 @@ var availableWood    = doc.getElementById('wood').innerHTML;
 var availableStone   = doc.getElementById('stone').innerHTML;
 var availableIron    = doc.getElementById('iron').innerHTML;
 
+var availablePop     = parseInt( doc.getElementById('pop_max_label').innerText ) - parseInt( doc.getElementById('pop_current_label').innerText );
+
 if ( imputSpear )
 {
   var spearTimeCost  = time2sec( doc.getElementById('spear_0_cost_time').innerText );
@@ -90,20 +92,36 @@ function train()
     throw new Error("ERROR"); 
   }
 
-  var totalMax = 0;
-  totalMax += typeof imputSpear != "undefined" && doc.getElementById( 'spear' ).checked === true ? spearTimeCost : 0;
-  totalMax += typeof imputSword != "undefined" && doc.getElementById( 'sword' ).checked === true ? swordTimeCost : 0;
-  totalMax += typeof imputAxe   != "undefined" && doc.getElementById( 'axe' ).checked   === true ? axeTimeCost   : 0;
+  var isSpear = doc.getElementById( 'spear' ).checked;
+  var isSword = doc.getElementById( 'sword' ).checked;
+  var isAxe   = doc.getElementById( 'axe' ).checked;
 
-  if ( totalMax === 0 ) { Dialog.show( 'Errore', 'Seleziona almeno una tipologia di truppa!' + errorDivButtons ); throw new Error("ERROR"); }
+  var selectedTroupe = 0;
+
+  selectedTroupe += isSpear === true ? 1 : 0;
+  selectedTroupe += isSword === true ? 1 : 0;
+  selectedTroupe += isAxe === true ? 1 : 0;
+
+  if ( selectedTroupe === 0 )
+  {
+    Dialog.show( 'Errore', 'Seleziona almeno una tipologia di truppa!' + errorDivButtons );
+    throw new Error("ERROR");
+  }
+
+  var totalMax = 0;
+  totalMax += typeof imputSpear != "undefined" && isSpear === true ? spearTimeCost : 0;
+  totalMax += typeof imputSword != "undefined" && isSword === true ? swordTimeCost : 0;
+  totalMax += typeof imputAxe   != "undefined" && isAxe   === true ? axeTimeCost   : 0;
 
   var sec   = time2sec( time );
   var train = Math.floor( sec/totalMax );
   train     = Math.min( maxArmy, train );
 
-  var spear = typeof imputSpear != "undefined" && doc.getElementById('spear').checked === true ? train > spearMax ? spearMax : train : "";
-  var sword = typeof imputSword != "undefined" && doc.getElementById('sword').checked === true ? train > swordMax ? swordMax : train : "";
-  var axe   = typeof imputAxe   != "undefined" && doc.getElementById('axe').checked   === true ? train > axeMax   ? axeMax   : train : "";
+  if ( train > availablePop ) train = Math.floor( availablePop / selectedTroupe );
+
+  var spear = typeof imputSpear != "undefined" && isSpear === true ? train > spearMax ? spearMax : train : "";
+  var sword = typeof imputSword != "undefined" && isSword === true ? train > swordMax ? swordMax : train : "";
+  var axe   = typeof imputAxe   != "undefined" && isAxe   === true ? train > axeMax   ? axeMax   : train : "";
 
   if ( typeof imputSpear != "undefined" ) imputSpear.value = spear;
   if ( typeof imputSword != "undefined" ) imputSword.value = sword;
