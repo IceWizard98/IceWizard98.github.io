@@ -133,7 +133,7 @@ function train()
 {
   console.log('Script made by IceWizard');
   console.log('Version 1.0.1');
-  console.log('Last update: 2020-05-01');
+  console.log('Last update: 2022-07-02');
 
   console.log('availableWood:' + availableWood);
   console.log('availableStone:' + availableStone);
