@@ -98,9 +98,13 @@ function train()
 
   var selectedTroupe = 0;
 
-  selectedTroupe += isSpear === true ? 1 : 0;
-  selectedTroupe += isSword === true ? 1 : 0;
-  selectedTroupe += isAxe === true ? 1 : 0;
+  var inputSpearSet = typeof inputSpear != "undefined";
+  var inputSwordSet = typeof inputSword != "undefined";
+  var inputAxeSet   = typeof inputAxe   != "undefined";
+
+  selectedTroupe += inputSpearSet && isSpear === true ? 1 : 0;
+  selectedTroupe += inputSwordSet && isSword === true ? 1 : 0;
+  selectedTroupe += inputAxeSet   && isAxe   === true ? 1 : 0;
 
   if ( selectedTroupe === 0 )
   {
@@ -109,9 +113,9 @@ function train()
   }
 
   var totalMax = 0;
-  totalMax += typeof inputSpear != "undefined" && isSpear === true ? spearTimeCost : 0;
-  totalMax += typeof inputSword != "undefined" && isSword === true ? swordTimeCost : 0;
-  totalMax += typeof inputAxe   != "undefined" && isAxe   === true ? axeTimeCost   : 0;
+  totalMax += inputSpearSet && isSpear === true ? spearTimeCost : 0;
+  totalMax += inputSwordSet && isSword === true ? swordTimeCost : 0;
+  totalMax += inputAxeSet   && isAxe   === true ? axeTimeCost   : 0;
 
   var sec   = time2sec( time );
   var train = Math.floor( sec/totalMax );
@@ -119,9 +123,9 @@ function train()
 
   if ( train > availablePop ) train = Math.floor( availablePop / selectedTroupe );
 
-  var spear = typeof inputSpear != "undefined" && isSpear === true ? train > spearMax ? spearMax : train : "";
-  var sword = typeof inputSword != "undefined" && isSword === true ? train > swordMax ? swordMax : train : "";
-  var axe   = typeof inputAxe   != "undefined" && isAxe   === true ? train > axeMax   ? axeMax   : train : "";
+  var spear = inputSpearSet && isSpear === true ? train > spearMax ? spearMax : train : "";
+  var sword = inputSwordSet && isSword === true ? train > swordMax ? swordMax : train : "";
+  var axe   = inputAxeSet   && isAxe   === true ? train > axeMax   ? axeMax   : train : "";
 
   if ( typeof inputSpear != "undefined" ) inputSpear.value = spear;
   if ( typeof inputSword != "undefined" ) inputSword.value = sword;
@@ -141,5 +145,5 @@ function train()
   console.log('availableIron:' + availableIron);
   console.log('availablePop:' + availablePop);
 
-  Dialog.show('content', "<table> <tr> <td> <span>Tempo: </span> <input type='text' id='time' placeholder='hh:mm:ss'/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='spear' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='sword' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='axe' checked/> </td><td> <button class='btn evt-confirm-btn btn-confirm-ok' onclick='train()'>Recluta</button> </td></tr></table>");
+  Dialog.show('content', "<table> <tr> <td> <span>Tempo: </span> <input type='text' id='time' placeholder='hh:mm'/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='spear' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='sword' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='axe' checked/> </td><td> <button class='btn evt-confirm-btn btn-confirm-ok' onclick='train()'>Recluta</button> </td></tr></table>");
 }());
