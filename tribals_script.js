@@ -9,13 +9,13 @@ function time2sec( timeToSec )
 {
   var sec = 0;
   var timeArray = timeToSec.split(':');
-  var h = timeArray[0];
-  var m = timeArray[1];
-  var s = timeArray[2];
+  var h = timeArray[0] || 0;
+  var m = timeArray[1] || 0;
+  var s = timeArray[2] || 0;
 
-  sec = sec + parseInt( s );
-  sec = sec + parseInt( m ) * 60;
-  sec = sec + parseInt( h ) * 3600;
+  sec = sec + parseInt( s ) || 0;
+  sec = sec + ( parseInt( m ) || 0 ) * 60;
+  sec = sec + ( parseInt( h ) || 0  ) * 3600;
 
   return sec;
 }
@@ -86,7 +86,7 @@ function train()
   var time      = doc.getElementById('time').value;
   var timeArray = time.split(':');
 
-  if ( timeArray.length !== 3 || timeArray.some( (x) => x === "" ) )
+  if ( timeArray.length < 2  || timeArray.some( (x) => x === "" ) )
   {
     Dialog.show( 'Errore', '<p>Formattazione errata!</p>' + errorDivButtons );
     throw new Error("ERROR");
