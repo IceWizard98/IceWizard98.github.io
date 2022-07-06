@@ -24,6 +24,10 @@ var inputSpear       = doc.forms[0].spear_0;
 var inputSword       = doc.forms[0].sword_0;
 var inputAxe         = doc.forms[0].axe_0;
 
+var inputSpearSet    = typeof inputSpear != "undefined";
+var inputSwordSet    = typeof inputSword != "undefined";
+var inputAxeSet      = typeof inputAxe   != "undefined";
+
 var availableWood    = doc.getElementById('wood').innerHTML;
 var availableStone   = doc.getElementById('stone').innerHTML;
 var availableIron    = doc.getElementById('iron').innerHTML;
@@ -92,15 +96,17 @@ function train()
     throw new Error("ERROR");
   }
 
-  var isSpear = doc.getElementById( 'spear' ).checked;
-  var isSword = doc.getElementById( 'sword' ).checked;
-  var isAxe   = doc.getElementById( 'axe' ).checked;
+  window.localStorage.setItem( 'tribals_script_time', time );
+
+  var isSpear = doc.getElementById( 'spear' ) ? doc.getElementById( 'spear' ).checked : false;
+  var isSword = doc.getElementById( 'sword' ) ?doc.getElementById( 'sword' ).checked : false;
+  var isAxe   = doc.getElementById( 'axe' ) ? doc.getElementById( 'axe' ).checked : false;
+
+  window.localStorage.setItem( 'tribals_script_spear',  isSpear );
+  window.localStorage.setItem( 'tribals_script_sword', isSword );
+  window.localStorage.setItem( 'tribals_script_axe', isAxe );
 
   var selectedTroupe = 0;
-
-  var inputSpearSet = typeof inputSpear != "undefined";
-  var inputSwordSet = typeof inputSword != "undefined";
-  var inputAxeSet   = typeof inputAxe   != "undefined";
 
   selectedTroupe += inputSpearSet && isSpear === true ? 1 : 0;
   selectedTroupe += inputSwordSet && isSword === true ? 1 : 0;
@@ -145,5 +151,23 @@ function train()
   console.log('availableIron:' + availableIron);
   console.log('availablePop:' + availablePop);
 
-  Dialog.show('content', "<table> <tr> <td> <span>Tempo: </span> <input type='text' id='time' placeholder='hh:mm'/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='spear' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='sword' checked/> </td><td> <img src='https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png' class='' data-title='Lanciere'></img> <input type='checkbox' id='axe' checked/> </td><td> <button class='btn evt-confirm-btn btn-confirm-ok' onclick='train()'>Recluta</button> </td></tr></table>");
+  var contet = '<div id="content">';
+  var defaultTime = window.localStorage.getItem( 'tribals_script_time' ) == null ? '' : window.localStorage.getItem( 'tribals_script_time' );
+
+  contet += '<table> <tr> <td> <span>Tempo: </span> </td><td> <input type=\'text\' id=\'time\' placeholder=\'hh:mm\' value="' + defaultTime + '" style="max-width: 10em"/> </td> </tr>';
+
+  var checkSpear = window.localStorage.getItem( 'tribals_script_spear' ) === 'true' ? ' checked ' : '';
+  var checkSword = window.localStorage.getItem( 'tribals_script_sword' ) === 'true' ? ' checked ' : '';
+  var checkAxe   = window.localStorage.getItem( 'tribals_script_axe' ) === 'true' ? ' checked ' : '';
+
+  contet += '<tr>';
+  contet += inputSpearSet ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png\' data-title=\'Spear\' /> </span></td><td> <input type=\'checkbox\' id=\'spear\' ' + checkSpear + '/> </td></tr>' : '';
+  contet += inputSwordSet ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png\' data-title=\'Sword\' /> </span></td><td> <input type=\'checkbox\' id=\'sword\' ' + checkSpear + '/> </td></tr>' : '';
+  contet += inputAxeSet   ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png\' data-title=\'Axe\' /> </span></td><td> <input type=\'checkbox\' id=\'axe\' ' + checkSpear + '/> </td></tr>'   : '';
+  contet += '</tr>';
+
+  contet += '<tr></tr><td> <button class=\'btn evt-confirm-btn btn-confirm-ok\' onclick=\'train()\'>Recluta</button> </td></tr>';
+  contet += '</table> </div>';
+
+  Dialog.show('content', contet);
 }());
