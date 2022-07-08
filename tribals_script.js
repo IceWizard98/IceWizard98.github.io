@@ -17,7 +17,7 @@ function time2sec( timeToSec )
   sec = sec + ( parseInt( m ) || 0 ) * 60;
   sec = sec + ( parseInt( h ) || 0  ) * 3600;
 
-  return sec;
+  return timeArray.reduce( (a, b) => parseInt(a) + parseInt(b) * 60 );
 }
 
 var inputSpear       = doc.forms[0].spear_0;
@@ -162,8 +162,8 @@ function train()
 
   contet += '<tr>';
   contet += inputSpearSet ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_spear.png\' data-title=\'Spear\' /> </span></td><td> <input type=\'checkbox\' id=\'spear\' ' + checkSpear + '/> </td></tr>' : '';
-  contet += inputSwordSet ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png\' data-title=\'Sword\' /> </span></td><td> <input type=\'checkbox\' id=\'sword\' ' + checkSpear + '/> </td></tr>' : '';
-  contet += inputAxeSet   ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png\' data-title=\'Axe\' /> </span></td><td> <input type=\'checkbox\' id=\'axe\' ' + checkSpear + '/> </td></tr>'   : '';
+  contet += inputSwordSet ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_sword.png\' data-title=\'Sword\' /> </span></td><td> <input type=\'checkbox\' id=\'sword\' ' + checkSword + '/> </td></tr>' : '';
+  contet += inputAxeSet   ? '<tr><td> <span><img src=\'https://dsit.innogamescdn.com/asset/88a8f29e/graphic/unit/unit_axe.png\' data-title=\'Axe\' /> </span></td><td> <input type=\'checkbox\' id=\'axe\' ' + checkAxe + '/> </td></tr>'   : '';
   contet += '</tr>';
 
   contet += '<tr></tr><td> <button class=\'btn evt-confirm-btn btn-confirm-ok\' onclick=\'train()\'>Recluta</button> </td></tr>';
