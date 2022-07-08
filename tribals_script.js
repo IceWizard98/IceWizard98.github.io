@@ -17,7 +17,7 @@ function time2sec( timeToSec )
   sec = sec + ( parseInt( m ) || 0 ) * 60;
   sec = sec + ( parseInt( h ) || 0  ) * 3600;
 
-  return timeArray.reduce( (a, b) => parseInt(a) + parseInt(b) * 60 );
+  return sec;
 }
 
 var inputSpear       = doc.forms[0].spear_0;
